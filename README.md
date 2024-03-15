@@ -6,7 +6,7 @@ Due to lack of Unitree Go2 robot, we only test the library in our Unitree Go1 ro
 mkdir build
 cd build
 cmake ..
-make
+make moth_go2_arclab
 #in the build dir
 export ARCLAB_WEIGHT_PATH=../weight
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../lib/arclab_control
