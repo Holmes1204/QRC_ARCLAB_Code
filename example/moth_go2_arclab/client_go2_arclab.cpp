@@ -191,7 +191,7 @@ void Custom::RoboControl()
     //3. calculate the output
     controller.calculate();
     //4. send the output to low level controller
-    if (key > 10)
+    if (key == 1)
     {
       Button_A_count++;
     }else
@@ -226,6 +226,9 @@ void Custom::RoboControl()
       }
       percent = (double)mode_1_count/2000;
       if (percent >= 1.0) { percent = 1.0; }
+	  else{
+		printf("standing now\n");
+	  }
       // std::cout << "update" << mode_1_count << std::endl;
       for(int j=0; j<12; j++){
         jcmd.pos[j] = lastPos[j]*(1-percent) + jcmd.pos[j]*percent;
