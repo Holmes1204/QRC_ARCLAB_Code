@@ -191,7 +191,7 @@ void Custom::RoboControl()
     //3. calculate the output
     controller.calculate();
     //4. send the output to low level controller
-    if (key == 1)
+    if (key > 10)
     {
       Button_A_count++;
     }else
@@ -217,21 +217,21 @@ void Custom::RoboControl()
     if (mode == 1 )
     {
       mode_1_count++;
-	  std::cout<<"flag 1"<<std::endl;
+	//   std::cout<<"flag 1"<<std::endl;
       controller.getDefault(jcmd);
       double percent;
       if (mode_1_count==1)
       {
         for(int j=0; j<12; j++) lastPos[j] = feedback.joint_.pos[j];
       }
-      percent = (double)mode_1_count/4000;
+      percent = (double)mode_1_count/2000;
       if (percent >= 1.0) { percent = 1.0; }
       // std::cout << "update" << mode_1_count << std::endl;
       for(int j=0; j<12; j++){
         jcmd.pos[j] = lastPos[j]*(1-percent) + jcmd.pos[j]*percent;
         // printf("%f ",jcmd.pos[j]);
       }
-	  std::cout<<"flag 2"<<std::endl;
+	//   std::cout<<"flag 2"<<std::endl;
 
       // printf("\n");
       for (size_t i = 0; i < 12; i++)
@@ -245,12 +245,12 @@ void Custom::RoboControl()
         low_cmd.motor_cmd()[i].kp()   = 30;
         low_cmd.motor_cmd()[i].kd()   = 0.8;
       }
-	  	std::cout<<"flag 3"<<std::endl;
+	  	// std::cout<<"flag 3"<<std::endl;
 		low_cmd.crc() = crc32_core((uint32_t *)&low_cmd, (sizeof(unitree_go::msg::dds_::LowCmd_)>>2)-1);
-	  	std::cout<<"flag 4"<<std::endl;
+	  	// std::cout<<"flag 4"<<std::endl;
 		
 		lowcmd_publisher->Write(low_cmd);
-	  	std::cout<<"flag 5"<<std::endl;	
+	  	// std::cout<<"flag 5"<<std::endl;	
 
     }
     else if(mode==2)
@@ -260,6 +260,7 @@ void Custom::RoboControl()
       {
           int swap_i = swapJointIndices_[i];
           // printf("%f ",jcmd.pos[i]);
+		low_cmd.motor_cmd()[i].mode() = (0x01);   // motor switch to servo (PMSM) mode
         low_cmd.motor_cmd()[i].q()   =  jcmd.pos[swap_i];
         low_cmd.motor_cmd()[i].dq()   = 0.0;
         low_cmd.motor_cmd()[i].tau()  = 0.0;
