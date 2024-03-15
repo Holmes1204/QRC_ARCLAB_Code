@@ -178,7 +178,7 @@ void Custom::RoboControl()
     feedback.imu_.y  = low_state.imu_state().quaternion()[2];
     feedback.imu_.z  = low_state.imu_state().quaternion()[3];
 
-    mygamepad.vx  =  ry ;
+    mygamepad.vx  = -ry ;
     mygamepad.vy  = -rx;
     mygamepad.yaw = -lx;
 
@@ -191,7 +191,7 @@ void Custom::RoboControl()
     //3. calculate the output
     controller.calculate();
     //4. send the output to low level controller
-    if (key == 1)
+    if (key >= 16)
     {
       Button_A_count++;
     }else
